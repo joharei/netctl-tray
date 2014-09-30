@@ -12,6 +12,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMessageBox, QMenu
 
 
+ICONS_FOLDER = os.path.join(os.path.dirname(__file__), 'icons')
+
+
 class NetworkInterface:
     """Interface to netctl"""
 
@@ -94,27 +97,26 @@ class SystemTrayIcon(QSystemTrayIcon):
     def update_icon(self):
         """Update the tray icon according to the type of connection."""
 
-        icons_folder = 'icons'
         default_interface = self.network_interface.default_interface()
         if self.network_interface.carrier_ok(default_interface):
             if self.network_interface.interface_type(default_interface) == 'wired':
-                self.setIcon(QIcon(os.path.join(icons_folder, "network-wired-symbolic.svg")))
+                self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wired-symbolic.svg")))
             else:
                 quality = self.network_interface.get_quality()
                 if quality >= 90:
-                    self.setIcon(QIcon(os.path.join(icons_folder, "network-wireless-signal-excellent-symbolic.svg")))
+                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-excellent-symbolic.svg")))
                 elif quality >= 70:
-                    self.setIcon(QIcon(os.path.join(icons_folder, "network-wireless-signal-good-symbolic.svg")))
+                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-good-symbolic.svg")))
                 elif quality >= 50:
-                    self.setIcon(QIcon(os.path.join(icons_folder, "network-wireless-signal-ok-symbolic.svg")))
+                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-ok-symbolic.svg")))
                 elif quality >= 30:
-                    self.setIcon(QIcon(os.path.join(icons_folder, "network-wireless-signal-weak-symbolic.svg")))
+                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-weak-symbolic.svg")))
                 elif quality >= 10:
-                    self.setIcon(QIcon(os.path.join(icons_folder, "network-wireless-signal-none-symbolic.svg")))
+                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-none-symbolic.svg")))
                 else:
-                    self.setIcon(QIcon(os.path.join(icons_folder, "network-wired-disconnected-symbolic.svg")))
+                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wired-disconnected-symbolic.svg")))
         else:
-            self.setIcon(QIcon(os.path.join(icons_folder, "network-wired-disconnected-symbolic.svg")))
+            self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wired-disconnected-symbolic.svg")))
 
 
 if __name__ == "__main__":
@@ -125,7 +127,7 @@ if __name__ == "__main__":
                              "I couldn't detect any system tray on this system.")
         sys.exit(1)
 
-    tray = SystemTrayIcon(QIcon(os.path.join('icons', 'network-wired-disconnected-symbolic.svg')))
+    tray = SystemTrayIcon(QIcon(os.path.join(ICONS_FOLDER, 'network-wired-disconnected-symbolic.svg')))
     tray.show()
 
     # set the exec loop going
