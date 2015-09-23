@@ -61,6 +61,7 @@ class SystemTrayIcon(QSystemTrayIcon):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setApplicationName('Netctl tray')
 
     if not QSystemTrayIcon.isSystemTrayAvailable():
         QMessageBox.critical(None, "Systray",
