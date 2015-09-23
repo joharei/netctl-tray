@@ -18,8 +18,6 @@ class SystemTrayIcon(QSystemTrayIcon):
         icon = QIcon.fromTheme('network-wired-acquiring', QIcon(':wired-acquiring'))
         super(SystemTrayIcon, self).__init__(icon, parent)
         menu = QMenu(parent)
-        # exit_action = menu.addAction("Exit")
-        # exit_action.triggered.connect(QApplication.quit)
         self.setToolTip('Netctl')
         self.setContextMenu(menu)
 
