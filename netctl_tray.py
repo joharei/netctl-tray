@@ -10,9 +10,7 @@ import subprocess
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMessageBox, QMenu
-
-
-ICONS_FOLDER = os.path.join(os.path.dirname(__file__), 'icons')
+import netctl_tray_rc
 
 
 class NetworkInterface:
@@ -76,11 +74,13 @@ class NetworkInterface:
 class SystemTrayIcon(QSystemTrayIcon):
     """A system tray icon displaying the network connection state."""
 
-    def __init__(self, icon, parent=None):
+    def __init__(self, parent=None):
+        icon = QIcon.fromTheme('network-wired-acquiring', QIcon(':wired-acquiring'))
         super(SystemTrayIcon, self).__init__(icon, parent)
         menu = QMenu(parent)
-        exit_action = menu.addAction("Exit")
-        exit_action.triggered.connect(QApplication.quit)
+        # exit_action = menu.addAction("Exit")
+        # exit_action.triggered.connect(QApplication.quit)
+        self.setToolTip('Netctl')
         self.setContextMenu(menu)
         self.network_interface = NetworkInterface()
 
@@ -100,35 +100,38 @@ class SystemTrayIcon(QSystemTrayIcon):
         default_interface = self.network_interface.default_interface()
         if self.network_interface.carrier_ok(default_interface):
             if self.network_interface.interface_type(default_interface) == 'wired':
-                self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wired-symbolic.svg")))
+                self.setIcon(QIcon.fromTheme('network-wired', QIcon(':wired')))
+                self.setToolTip('Wired connection')
             else:
                 quality = self.network_interface.get_quality()
                 if quality >= 90:
-                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-excellent-symbolic.svg")))
+                    self.setIcon(QIcon.fromTheme('network-wireless-excellent', QIcon(':excellent')))
                 elif quality >= 70:
-                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-good-symbolic.svg")))
+                    self.setIcon(QIcon.fromTheme('network-wireless-good', QIcon(':good')))
                 elif quality >= 50:
-                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-ok-symbolic.svg")))
+                    self.setIcon(QIcon.fromTheme('network-wireless-ok', QIcon(':ok')))
                 elif quality >= 30:
-                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-weak-symbolic.svg")))
+                    self.setIcon(QIcon.fromTheme('network-wireless-weak', QIcon(':weak')))
                 elif quality >= 10:
-                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wireless-signal-none-symbolic.svg")))
+                    self.setIcon(QIcon.fromTheme('network-wireless-none', QIcon(':none')))
                 else:
-                    self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wired-disconnected-symbolic.svg")))
+                    self.setIcon(QIcon.fromTheme('network-wireless-disconnected', QIcon(':disconnected')))
+                self.setToolTip('Wireless connection.\nSignal strength: {:.1f} %'.format(quality))
         else:
-            self.setIcon(QIcon(os.path.join(ICONS_FOLDER, "network-wired-disconnected-symbolic.svg")))
+                self.setIcon(QIcon.fromTheme('network-wired-disconnected', QIcon(':disconnected')))
+                self.setToolTip('No connection')
 
 
 if __name__ == "__main__":
-    app = QApplication([])
+    app = QApplication(sys.argv)
 
     if not QSystemTrayIcon.isSystemTrayAvailable():
         QMessageBox.critical(None, "Systray",
                              "I couldn't detect any system tray on this system.")
         sys.exit(1)
 
-    tray = SystemTrayIcon(QIcon(os.path.join(ICONS_FOLDER, 'network-wired-disconnected-symbolic.svg')))
+    tray = SystemTrayIcon()
     tray.show()
 
     # set the exec loop going
-    app.exec_()
+    sys.exit(app.exec_())

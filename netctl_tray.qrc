@@ -1,0 +1,13 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/">
+        <file alias="disconnected">icons/network-wired-disconnected-symbolic.svg</file>
+        <file alias="wired">icons/network-wired-symbolic.svg</file>
+        <file alias="wireless-acquiring">icons/network-wireless-acquiring-symbolic.svg</file>
+        <file alias="wired-acquiring">icons/network-wired-acquiring-symbolic.svg</file>
+        <file alias="excellent">icons/network-wireless-signal-excellent-symbolic.svg</file>
+        <file alias="good">icons/network-wireless-signal-good-symbolic.svg</file>
+        <file alias="ok">icons/network-wireless-signal-ok-symbolic.svg</file>
+        <file alias="weak">icons/network-wireless-signal-weak-symbolic.svg</file>
+        <file alias="none">icons/network-wireless-signal-none-symbolic.svg</file>
+    </qresource>
+</RCC>
